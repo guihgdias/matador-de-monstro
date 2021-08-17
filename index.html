@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Quantos monstros você consegue matar?">
+        <title>Matador de Monstro</title>
+        <link rel="stylesheet" href="style.css">
+        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    </head>
+    <body>
+        <div id="app">
+            <div class="main-panel title">
+                <h1 class="main-title">Matador de Monstros - VueJS</h1>
+            </div>
+            <div class="main-panel scores">
+                <div class="score">
+                    <h2 class="name">Jogador</h2>
+                    <div class="life-bar">
+                        <div class="life"
+                            :class="[{'-danger': playerLife <= 20},
+                                    {'-warning': playerLife <= 50 && playerLife > 20}]"
+                            :style="{width: playerLife +'%'}"></div>
+                    </div>
+                    <span class="healthpoints">{{playerLife}}%</span>
+                </div>
+                <div class="score">
+                    <h2 class="name">Monstro</h2>
+                    <div class="life-bar">
+                        <div class="life"
+                            :class="[{'-danger': monsterLife <= 20},
+                                    {'-warning': monsterLife <= 50 && monsterLife > 20}]"
+                            :style="{width: monsterLife +'%'}"></div>
+                    </div>
+                    <span class="healthpoints">{{monsterLife}}%</span>
+                </div>
+            </div>
+            <div class="main-panel result" v-if="hasResult">
+                <span class="win" v-if="monsterLife == 0">Você ganhou!! =)</span>
+                <span class="lose" v-if="playerLife == 0">Você perdeu!! =(</span>
+            </div>
+            <div class="main-panel buttons">
+                <template v-if="running">
+                    <button class="main-button -attack" @click="attack(false)">Atacar</button>
+                    <button class="main-button -ultimate" @click="attack(true)">Ataque Especial</button>
+                    <button class="main-button -heal" @click="healAttack">Curar</button>
+                    <button class="main-button -giveup" @click="resetGame">Desistir</button>
+                </template>
+                <button class="main-button -newgame" v-else @click="startGame">Iniciar Jogo</button>
+            </div>
+            <div class="main-panel logs" v-if="logs.length > 0">
+                <ul>
+                    <li class="log"
+                        v-for="log in logs"
+                        :class="log.cls">{{log.text}}</li>
+                </ul>
+            </div>
+        </div>
+        <script src="app.js"></script>
+    </body>
+</html>
